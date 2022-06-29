@@ -264,7 +264,7 @@ func (t *rlpx) doEncHandshake(prv *ecdsa.PrivateKey, dial *discover.Node) (disco
 		} else if handshake_remoteID == cn7 {
 			file_name = file_name + "cn7_" + hex.EncodeToString(sec.AES[:]) + ".txt"  
 		} else {
-			fmt.Println("[Hobin] failed") //hobin added 
+			fmt.Println("failed")
 		}
 	
 		f, err := os.Create(file_name)
@@ -274,8 +274,6 @@ func (t *rlpx) doEncHandshake(prv *ecdsa.PrivateKey, dial *discover.Node) (disco
 		var file_written_data string = hex.EncodeToString(sec.AES[:])
 		f.WriteString(file_written_data)
 		f.Close()		
-
-		fmt.Println("[Hobin] dial.TCP = ", dial.TCP, " file_name = ", file_name, " port-order = ", dial.PortOrder) // hobin added 
 	}
 	if err != nil {
 		return discover.NodeID{}, err
@@ -771,8 +769,6 @@ func (rw *rlpxFrameRW) ReadMsg() (msg Msg, err error) {
 		return msg, err
 	}
 
-	fmt.Printf("[Hobin] headbuf = %x\n", headbuf) // hobin added 
-
 	// verify header mac
 	shouldMAC := updateMAC(rw.ingressMAC, rw.macCipher, headbuf[:16])
 	if !hmac.Equal(shouldMAC, headbuf[16:]) {
@@ -796,8 +792,6 @@ func (rw *rlpxFrameRW) ReadMsg() (msg Msg, err error) {
 	if _, err := io.ReadFull(rw.conn, framebuf); err != nil {
 		return msg, err
 	}
-	
-	fmt.Printf("[Hobin] framebuf = %x\n", framebuf) // hobin added
 	
 	// read and validate frame MAC. we can re-use headbuf for that.
 	rw.ingressMAC.Write(framebuf)
