@@ -3,9 +3,12 @@
 # 1. Introduction
 This document is to reproduce the Klaytn consensus message monitoring experiment environment. Let us describe briefly our experimental setup for the simple controlled experiment involving seven CNs. Each CN operates on separate virtual machines (VMs) and all of their peer-to-peer sessions go over the common software Open vSwitch (OvS). One POX controller is connected to the software switch. Then we captured all packets per network interface we defined (tap1, tap2 and so on). 
 
-Figure1. Overview of our SDN-based Klaytn network analysis framework
 
-	
+![figure1](https://user-images.githubusercontent.com/72332195/177160696-9a5d6ece-0907-42a3-9609-bde805e63d3f.png)
+<div align=center> 
+<b>Figure1. Overview of our SDN-based Klaytn network analysis framework</b> 
+</div> 
+
 # 2. Consensus message monitoring
 ## consensus message
 Consensus node(CN) of Klaytn is built atop the Istanbul Byzantine Fault Tolerance(IBFT) protocol. IBFT is a consensus protocol for blockchain that guarantees immediate finality. There are four distinct types of consensus messages in IBFT: pre-prepare, prepare, commit, and roundchange. 
@@ -14,7 +17,9 @@ In terms of implementation, several types of messages are used to maintain the K
 Monitoring consensus messages represents the list of messages received per round for each CN. If one of the CNs becomes the proposer at a particular round number, it will not receive a preprepare message. 
 I utilized Grafana's dashboard to represent the number of messages received from each CN.
 
-Figure 2. Grafana dashboard example
+
+![figure2](https://user-images.githubusercontent.com/72332195/177161027-94c1b9fa-af4b-46a6-8652-d59f090e07f1.png)
+<div align=center> <b> Figure 2. Grafana dashboard example </b> </div>
 
 
 # 3. File description
@@ -38,7 +43,9 @@ This file transmits the secret key extracted from rlpx.go to the host machine. Y
 ## Data Structure
 We decrypt and decode the received RLPx messages. Figure 3 shows the RLPx message structure. We use the counter-mode symmetric key decryption with AES. And the Snappy compression is used to decompress messages.
 
-Figure3. RLPx message structure
+
+![figure3](https://user-images.githubusercontent.com/72332195/177161112-6579a5af-7ff8-4819-92c3-5dc56e6e4458.png)
+<div align=center> <b> Figure3. RLPx message structure </b> </div>
 
 ## Data collection
 I used the open-source PacketSorter library to gather data. It sorts packets ordered by sequence number and any duplicated and empty messages are eliminated from the output pcap file. 
